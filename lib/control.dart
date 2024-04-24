@@ -27,12 +27,13 @@ class _ControlState extends State<Control> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
+      iconSize: 80,
       onPressed: handlePressed,
       icon: AnimatedRotation(
         turns: playing ? 1 / 4 : 0,
-        duration: const Duration(milliseconds: 300),
+        duration: Durations.medium1,
         child: AnimatedCrossFade(
-            duration: const Duration(milliseconds: 300),
+            duration: Durations.medium1,
             firstChild: const Icon(Icons.play_arrow_rounded),
             secondChild: const Icon(Icons.stop_rounded),
             crossFadeState:

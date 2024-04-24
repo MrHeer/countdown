@@ -1,4 +1,6 @@
 import 'package:countdown/control.dart';
+import 'package:countdown/display.dart';
+import 'package:countdown/time_picker.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -38,11 +40,22 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: const Center(
+      body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Control(),
+            SizedBox.fromSize(
+              size: const Size.fromHeight(240),
+              child: const Center(
+                child: AnimatedCrossFade(
+                  duration: Durations.medium2,
+                  firstChild: TimePicker(),
+                  secondChild: Display(),
+                  crossFadeState: CrossFadeState.showFirst,
+                ),
+              ),
+            ),
+            const Control(),
           ],
         ),
       ),
