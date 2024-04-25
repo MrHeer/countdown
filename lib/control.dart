@@ -10,6 +10,7 @@ class Control extends StatelessWidget {
     final model = Provider.of<Model>(context);
 
     return IconButton(
+      color: Theme.of(context).colorScheme.primary,
       iconSize: 80,
       onPressed: model.toggle,
       icon: AnimatedRotation(

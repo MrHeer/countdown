@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Model extends ChangeNotifier {
-  bool _playing = false;
-  TimeOfDay _time = TimeOfDay.now();
+  var _playing = false;
+  var _time = TimeOfDay.now();
 
   set playing(bool playing) {
     _playing = playing;

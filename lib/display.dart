@@ -12,7 +12,10 @@ class Display extends StatelessWidget {
         const Text("After"),
         Text(
           const TimeOfDay(hour: 2, minute: 23).format(context),
-          style: const TextStyle(fontSize: 80),
+          style: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: Theme.of(context).colorScheme.primary,
+              fontSize: 80),
         ),
         const Text("To"),
         Text(
