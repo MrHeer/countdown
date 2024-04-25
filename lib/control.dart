@@ -1,43 +1,27 @@
+import 'package:countdown/model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Control extends StatefulWidget {
+class Control extends StatelessWidget {
   const Control({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    return _ControlState();
-  }
-}
-
-class _ControlState extends State<Control> {
-  late bool playing;
-
-  @override
-  void initState() {
-    super.initState();
-    playing = false;
-  }
-
-  void handlePressed() {
-    setState(() {
-      playing = !playing;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final model = Provider.of<Model>(context);
+
     return IconButton(
       iconSize: 80,
-      onPressed: handlePressed,
+      onPressed: model.toggle,
       icon: AnimatedRotation(
-        turns: playing ? 1 / 4 : 0,
-        duration: Durations.medium1,
+        turns: model.playing ? 1 / 4 : 0,
+        duration: Durations.medium2,
         child: AnimatedCrossFade(
             duration: Durations.medium1,
             firstChild: const Icon(Icons.play_arrow_rounded),
             secondChild: const Icon(Icons.stop_rounded),
-            crossFadeState:
-                playing ? CrossFadeState.showSecond : CrossFadeState.showFirst),
+            crossFadeState: model.playing
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst),
       ),
     );
   }
