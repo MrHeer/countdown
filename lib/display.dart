@@ -36,24 +36,25 @@ class _Countdown extends StatefulWidget {
   }
 }
 
+TimeOfDay _fromDuration(Duration duration) {
+  return TimeOfDay(
+      hour: duration.inHours,
+      minute: duration.inMinutes % Duration.minutesPerHour);
+}
+
 class _CountdownState extends State<_Countdown> {
   late final Timer timer;
   late TimeOfDay time;
 
   TimeOfDay getNewTime() {
-    final now = DateTime.now();
-    var time = DateTime(
-        now.year, now.month, now.day, widget.time.hour, widget.time.minute);
+    final now =
+        DateTime.now().copyWith(second: 0, millisecond: 0, microsecond: 0);
+    var time = now.copyWith(hour: widget.time.hour, minute: widget.time.minute);
     if (now.isAfter(time)) {
       time = time.add(const Duration(days: 1));
     }
-
     final duration = time.difference(now);
-
-    return TimeOfDay(
-        hour: duration.inHours,
-        minute:
-            duration.inMinutes - duration.inHours * Duration.minutesPerHour);
+    return _fromDuration(duration);
   }
 
   @override
