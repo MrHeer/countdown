@@ -23,7 +23,7 @@ class TimePicker extends StatelessWidget {
           handleTap(context);
         },
         child: SizedBox(
-          width: 240,
+          width: 280,
           height: 120,
           child: Center(
             child: Text(
