@@ -16,17 +16,26 @@ class TimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        handleTap(context);
-      },
-      style: TextButton.styleFrom(
-        foregroundColor: Theme.of(context).colorScheme.primary,
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        textStyle: const TextStyle(fontSize: 80),
-      ),
-      child: Text(
-        Provider.of<Model>(context).time.format(context),
+    return Card.filled(
+      color: Theme.of(context).colorScheme.primaryContainer,
+      child: InkWell(
+        onTap: () {
+          handleTap(context);
+        },
+        child: SizedBox(
+          width: 240,
+          height: 120,
+          child: Center(
+            child: Text(
+              Provider.of<Model>(context).time.format(context),
+              style: TextStyle(
+                fontSize: 80,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
