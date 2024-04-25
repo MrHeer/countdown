@@ -69,6 +69,12 @@ class _CountdownState extends State<_Countdown> {
   }
 
   @override
+  void didUpdateWidget(covariant _Countdown oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    time = getNewTime();
+  }
+
+  @override
   void dispose() {
     super.dispose();
     timer.cancel();
