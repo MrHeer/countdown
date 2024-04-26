@@ -1,3 +1,4 @@
+import 'package:countdown/extensions.dart';
 import 'package:countdown/model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,16 +19,18 @@ class TimePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card.filled(
       color: Theme.of(context).colorScheme.primaryContainer,
+      clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: () {
           handleTap(context);
         },
-        child: SizedBox(
-          width: 280,
-          height: 120,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Center(
+            widthFactor: 1,
+            heightFactor: 1,
             child: Text(
-              Provider.of<Model>(context).time.format(context),
+              Provider.of<Model>(context).time.format24Hour(),
               style: TextStyle(
                 fontSize: 80,
                 fontWeight: FontWeight.w700,

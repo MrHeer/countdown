@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:countdown/extensions.dart';
 import 'package:countdown/model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,7 @@ class Display extends StatelessWidget {
         _Countdown(time),
         const Text("To"),
         Text(
-          time.format(context),
+          time.format24Hour(),
           style: const TextStyle(fontSize: 40),
         ),
       ],
@@ -84,7 +85,7 @@ class _CountdownState extends State<_Countdown> {
   @override
   Widget build(BuildContext context) {
     return Text(
-      time.format(context),
+      time.format24Hour(),
       style: TextStyle(
           fontWeight: FontWeight.w700,
           color: Theme.of(context).colorScheme.primary,

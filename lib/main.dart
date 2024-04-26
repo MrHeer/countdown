@@ -72,25 +72,23 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            AnimatedCrossFade(
-              duration: Durations.medium2,
-              firstChild: SizedBox.fromSize(
-                  size: const Size.fromHeight(240),
-                  child: const Center(child: TimePicker())),
-              secondChild: SizedBox.fromSize(
-                  size: const Size.fromHeight(240),
-                  child: const Center(child: Display())),
-              crossFadeState: Provider.of<Model>(context).playing
-                  ? CrossFadeState.showSecond
-                  : CrossFadeState.showFirst,
-            ),
-            const Control(),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          AnimatedCrossFade(
+            duration: Durations.medium2,
+            firstChild: SizedBox.fromSize(
+                size: const Size.fromHeight(240),
+                child: const Center(child: TimePicker())),
+            secondChild: SizedBox.fromSize(
+                size: const Size.fromHeight(240),
+                child: const Center(child: Display())),
+            crossFadeState: Provider.of<Model>(context).playing
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+          ),
+          const Control(),
+        ],
       ),
     );
   }
