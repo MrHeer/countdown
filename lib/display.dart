@@ -32,15 +32,7 @@ class _Countdown extends StatefulWidget {
   final TimeOfDay time;
 
   @override
-  State<StatefulWidget> createState() {
-    return _CountdownState();
-  }
-}
-
-TimeOfDay _fromDuration(Duration duration) {
-  return TimeOfDay(
-      hour: duration.inHours,
-      minute: duration.inMinutes % Duration.minutesPerHour);
+  State<StatefulWidget> createState() => _CountdownState();
 }
 
 class _CountdownState extends State<_Countdown> {
@@ -55,7 +47,7 @@ class _CountdownState extends State<_Countdown> {
       time = time.add(const Duration(days: 1));
     }
     final duration = time.difference(now);
-    return _fromDuration(duration);
+    return TimeOfDayConverter.fromDuration(duration);
   }
 
   @override
@@ -64,9 +56,7 @@ class _CountdownState extends State<_Countdown> {
     time = getNewTime();
 
     timer = Timer.periodic(const Duration(minutes: 1), (timer) {
-      setState(() {
-        time = getNewTime();
-      });
+      setState(() => time = getNewTime());
     });
   }
 
@@ -83,13 +73,11 @@ class _CountdownState extends State<_Countdown> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      time.format24Hour(),
-      style: TextStyle(
-          fontWeight: FontWeight.w700,
-          color: Theme.of(context).colorScheme.primary,
-          fontSize: 80),
-    );
-  }
+  Widget build(BuildContext context) => Text(
+        time.format24Hour(),
+        style: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: Theme.of(context).colorScheme.primary,
+            fontSize: 80),
+      );
 }

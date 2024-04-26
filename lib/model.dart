@@ -9,30 +9,20 @@ class Model extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggle() {
-    playing = !_playing;
-  }
+  void toggle() => playing = !_playing;
 
-  bool get playing {
-    return _playing;
-  }
+  bool get playing => _playing;
 
   set time(TimeOfDay time) {
     _time = time;
     notifyListeners();
   }
 
-  TimeOfDay get time {
-    return _time;
-  }
+  TimeOfDay get time => _time;
 
-  int get timeInMinutes {
-    return time.hour * TimeOfDay.minutesPerHour + time.minute;
-  }
+  int get timeInMinutes => time.hour * TimeOfDay.minutesPerHour + time.minute;
 
-  set timeInMinutes(int timeInMinutes) {
-    time = TimeOfDay(
-        hour: timeInMinutes ~/ TimeOfDay.minutesPerHour,
-        minute: timeInMinutes % TimeOfDay.minutesPerHour);
-  }
+  set timeInMinutes(int timeInMinutes) => time = TimeOfDay(
+      hour: timeInMinutes ~/ TimeOfDay.minutesPerHour,
+      minute: timeInMinutes % TimeOfDay.minutesPerHour);
 }

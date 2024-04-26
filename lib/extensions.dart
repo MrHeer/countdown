@@ -6,4 +6,8 @@ extension TimeOfDayConverter on TimeOfDay {
     final minute = this.minute.toString().padLeft(2, "0");
     return "$hour:$minute";
   }
+
+  static TimeOfDay fromDuration(Duration duration) => TimeOfDay(
+      hour: duration.inHours,
+      minute: duration.inMinutes % Duration.minutesPerHour);
 }
