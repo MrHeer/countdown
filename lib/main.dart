@@ -46,23 +46,59 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  initModel() async {
+  Future<String> initModel() async {
     await load(widget.model);
     widget.model.addListener(() {
       save(widget.model);
     });
+    await Future.delayed(const Duration(seconds: 2));
+    return "Init success";
   }
 
-  @override
-  void initState() {
-    super.initState();
-    initModel();
+  List<Widget> buildPage() {
+    return <Widget>[
+      AnimatedCrossFade(
+        duration: Durations.medium2,
+        firstChild: SizedBox.fromSize(
+            size: const Size.fromHeight(240),
+            child: const Center(child: TimePicker())),
+        secondChild: SizedBox.fromSize(
+            size: const Size.fromHeight(240),
+            child: const Center(child: Display())),
+        crossFadeState: Provider.of<Model>(context).playing
+            ? CrossFadeState.showSecond
+            : CrossFadeState.showFirst,
+      ),
+      const Control(),
+    ];
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    widget.model.dispose();
+  List<Widget> buildLoading() {
+    return const <Widget>[
+      SizedBox(
+        width: 60,
+        height: 60,
+        child: CircularProgressIndicator(),
+      ),
+      Padding(
+        padding: EdgeInsets.only(top: 16),
+        child: Text('Awaiting init...'),
+      ),
+    ];
+  }
+
+  List<Widget> buildError(AsyncSnapshot<String> snapshot) {
+    return <Widget>[
+      const Icon(
+        Icons.error_outline,
+        color: Colors.red,
+        size: 60,
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 16),
+        child: Text('Error: ${snapshot.error}'),
+      ),
+    ];
   }
 
   @override
@@ -72,23 +108,25 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          AnimatedCrossFade(
-            duration: Durations.medium2,
-            firstChild: SizedBox.fromSize(
-                size: const Size.fromHeight(240),
-                child: const Center(child: TimePicker())),
-            secondChild: SizedBox.fromSize(
-                size: const Size.fromHeight(240),
-                child: const Center(child: Display())),
-            crossFadeState: Provider.of<Model>(context).playing
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-          ),
-          const Control(),
-        ],
+      body: FutureBuilder(
+        future: initModel(),
+        builder: (context, snapshot) {
+          List<Widget> children;
+          if (snapshot.hasData) {
+            children = buildPage();
+          } else if (snapshot.hasError) {
+            children = buildError(snapshot);
+          } else {
+            children = buildLoading();
+          }
+
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: children,
+            ),
+          );
+        },
       ),
     );
   }
