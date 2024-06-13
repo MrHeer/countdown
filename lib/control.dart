@@ -17,7 +17,7 @@ class Control extends StatelessWidget {
         turns: model.playing ? 1 / 4 : 0,
         duration: Durations.medium2,
         child: AnimatedCrossFade(
-            duration: Durations.medium1,
+            duration: Durations.medium2,
             firstChild: const Icon(Icons.play_arrow_rounded),
             secondChild: const Icon(Icons.stop_rounded),
             crossFadeState: model.playing
