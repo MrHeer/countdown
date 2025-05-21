@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:countdown/extensions.dart';
 import 'package:countdown/model.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' show TimeOfDay;
 import 'package:provider/provider.dart';
 
 class Display extends StatelessWidget {
@@ -13,10 +14,11 @@ class Display extends StatelessWidget {
     final time = Provider.of<Model>(context).time;
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        const Text("After"),
+        const Text('After'),
         _Countdown(time),
-        const Text("To"),
+        const Text('To'),
         Text(
           time.format24Hour(),
           style: const TextStyle(fontSize: 40),
@@ -75,9 +77,6 @@ class _CountdownState extends State<_Countdown> {
   @override
   Widget build(BuildContext context) => Text(
         time.format24Hour(),
-        style: TextStyle(
-            fontWeight: FontWeight.w700,
-            color: Theme.of(context).colorScheme.primary,
-            fontSize: 80),
+        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 80),
       );
 }

@@ -2,8 +2,8 @@ import 'package:countdown/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Keys {
-  static const playing = "playing";
-  static const time = "time";
+  static const playing = 'playing';
+  static const time = 'time';
 }
 
 Future<void> save(Model model) async {

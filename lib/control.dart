@@ -1,5 +1,6 @@
 import 'package:countdown/model.dart';
-import 'package:flutter/material.dart';
+import 'package:elegant_spring_animation/elegant_spring_animation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class Control extends StatelessWidget {
@@ -9,20 +10,20 @@ class Control extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = Provider.of<Model>(context);
 
-    return IconButton(
-      color: Theme.of(context).colorScheme.primary,
-      iconSize: 80,
+    return CupertinoButton(
       onPressed: model.toggle,
-      icon: AnimatedRotation(
+      child: AnimatedRotation(
         turns: model.playing ? 1 / 4 : 0,
-        duration: Durations.medium2,
+        curve: ElegantSpring.mediumBounce,
+        duration: ElegantSpring.mediumBounce.recommendedDuration,
         child: AnimatedCrossFade(
-            duration: Durations.medium2,
-            firstChild: const Icon(Icons.play_arrow_rounded),
-            secondChild: const Icon(Icons.stop_rounded),
-            crossFadeState: model.playing
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst),
+          duration: Duration(milliseconds: 300),
+          firstChild: const Icon(CupertinoIcons.play_fill, size: 80),
+          secondChild: const Icon(CupertinoIcons.stop_fill, size: 80),
+          crossFadeState: model.playing
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
+        ),
       ),
     );
   }

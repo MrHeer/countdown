@@ -24,5 +24,5 @@ class Model extends ChangeNotifier {
 
   set timeInMinutes(int timeInMinutes) => time = TimeOfDay(
       hour: timeInMinutes ~/ TimeOfDay.minutesPerHour,
-      minute: timeInMinutes % TimeOfDay.minutesPerHour);
+      minute: timeInMinutes % TimeOfDay.minutesPerHour,);
 }

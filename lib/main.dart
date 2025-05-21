@@ -1,11 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:countdown/control.dart';
+import 'package:countdown/debouncer.dart';
 import 'package:countdown/display.dart';
 import 'package:countdown/model.dart';
 import 'package:countdown/preferences.dart';
 import 'package:countdown/time_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(
@@ -19,11 +20,13 @@ class App extends StatelessWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
+  Widget build(BuildContext context) => CupertinoApp(
         title: 'Countdown',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+        theme: CupertinoThemeData(
+          textTheme: CupertinoTextThemeData(
+            textStyle: GoogleFonts.robotoMono(color: CupertinoColors.label),
+            dateTimePickerTextStyle: TextStyle(fontWeight: FontWeight.w500),
+          ),
         ),
         home: HomePage(
           title: 'Countdown',
@@ -44,18 +47,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _debouncer = Debouncer();
   Future<String> initModel() async {
     await load(widget.model);
-    widget.model.addListener(() => save(widget.model));
-    await Future.delayed(Durations.long2);
-    return "Init success";
+    widget.model.addListener(() {
+      _debouncer.debounce(
+          duration: Duration(milliseconds: 500),
+          onDebounce: () => save(widget.model),);
+    });
+    await Future.delayed(Duration(milliseconds: 500));
+    return 'Init success';
   }
 
   List<Widget> buildLoading() => const <Widget>[
         SizedBox(
           width: 60,
           height: 60,
-          child: CircularProgressIndicator(),
+          child: CupertinoActivityIndicator(),
         ),
         Padding(
           padding: EdgeInsets.only(top: 16),
@@ -65,8 +73,8 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> buildError(AsyncSnapshot<String> snapshot) => <Widget>[
         const Icon(
-          Icons.error_outline,
-          color: Colors.red,
+          CupertinoIcons.exclamationmark_circle_fill,
+          color: CupertinoColors.destructiveRed,
           size: 60,
         ),
         Padding(
@@ -76,12 +84,8 @@ class _HomePageState extends State<HomePage> {
       ];
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
-        ),
-        body: FutureBuilder(
+  Widget build(BuildContext context) => CupertinoPageScaffold(
+        child: FutureBuilder(
           future: initModel(),
           builder: (context, snapshot) {
             List<Widget> children;
@@ -110,21 +114,29 @@ class _MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<_MainPage> with TickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController.unbounded(
-    vsync: this,
-  )..animateWith(SpringSimulation(
-      const SpringDescription(mass: 1, stiffness: 20, damping: 14), 0, 1, 0));
+  late final AnimationController _animationController =
+      AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+  late final CurvedAnimation _animation = CurvedAnimation(
+    parent: _animationController,
+    curve: Curves.easeIn,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController.forward();
+  }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return FadeScaleTransition(
-      animation: _controller,
+      animation: _animation,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -133,18 +145,19 @@ class _MainPageState extends State<_MainPage> with TickerProviderStateMixin {
             child: PageTransitionSwitcher(
               transitionBuilder: (Widget child,
                   Animation<double> primaryAnimation,
-                  Animation<double> secondaryAnimation) {
+                  Animation<double> secondaryAnimation,) {
                 return SharedAxisTransition(
                   animation: primaryAnimation,
                   secondaryAnimation: secondaryAnimation,
+                  fillColor: CupertinoColors.transparent,
                   transitionType: SharedAxisTransitionType.horizontal,
                   child: child,
                 );
               },
               child: Provider.of<Model>(context).playing
-                  ? const Center(key: ValueKey("Display"), child: Display())
+                  ? const Center(key: ValueKey('Display'), child: Display())
                   : const Center(
-                      key: ValueKey("TimePicker"), child: TimePicker()),
+                      key: ValueKey('TimePicker'), child: TimePicker(),),
             ),
           ),
           const Control(),
