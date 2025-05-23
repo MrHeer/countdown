@@ -52,8 +52,9 @@ class _HomePageState extends State<HomePage> {
     await load(widget.model);
     widget.model.addListener(() {
       _debouncer.debounce(
-          duration: Duration(milliseconds: 500),
-          onDebounce: () => save(widget.model),);
+        duration: Duration(milliseconds: 500),
+        onDebounce: () => save(widget.model),
+      );
     });
     await Future.delayed(Duration(milliseconds: 500));
     return 'Init success';
@@ -143,9 +144,11 @@ class _MainPageState extends State<_MainPage> with TickerProviderStateMixin {
           SizedBox(
             height: 240,
             child: PageTransitionSwitcher(
-              transitionBuilder: (Widget child,
-                  Animation<double> primaryAnimation,
-                  Animation<double> secondaryAnimation,) {
+              transitionBuilder: (
+                Widget child,
+                Animation<double> primaryAnimation,
+                Animation<double> secondaryAnimation,
+              ) {
                 return SharedAxisTransition(
                   animation: primaryAnimation,
                   secondaryAnimation: secondaryAnimation,
@@ -157,7 +160,9 @@ class _MainPageState extends State<_MainPage> with TickerProviderStateMixin {
               child: Provider.of<Model>(context).playing
                   ? const Center(key: ValueKey('Display'), child: Display())
                   : const Center(
-                      key: ValueKey('TimePicker'), child: TimePicker(),),
+                      key: ValueKey('TimePicker'),
+                      child: TimePicker(),
+                    ),
             ),
           ),
           const Control(),

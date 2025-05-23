@@ -8,6 +8,7 @@ extension TimeOfDayConverter on TimeOfDay {
   }
 
   static TimeOfDay fromDuration(Duration duration) => TimeOfDay(
-      hour: duration.inHours,
-      minute: duration.inMinutes % Duration.minutesPerHour,);
+        hour: duration.inHours,
+        minute: duration.inMinutes % Duration.minutesPerHour,
+      );
 }
