@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:countdown/control.dart';
 import 'package:countdown/debouncer.dart';
 import 'package:countdown/display.dart';
+import 'package:countdown/localizations.dart';
 import 'package:countdown/model.dart';
 import 'package:countdown/preferences.dart';
 import 'package:countdown/time_picker.dart';
@@ -22,10 +23,16 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) => CupertinoApp(
         title: 'Countdown',
+        localizationsDelegates: [
+          CustomCupertinoLocalizations.delegate,
+        ],
         theme: CupertinoThemeData(
           textTheme: CupertinoTextThemeData(
             textStyle: GoogleFonts.robotoMono(color: CupertinoColors.label),
-            dateTimePickerTextStyle: TextStyle(fontWeight: FontWeight.w500),
+            dateTimePickerTextStyle: GoogleFonts.robotoMono(
+              fontWeight: FontWeight.w500,
+              fontSize: 32,
+            ),
           ),
         ),
         home: HomePage(

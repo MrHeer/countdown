@@ -18,6 +18,8 @@ class TimePicker extends StatelessWidget {
         model.time.hour,
         model.time.minute,
       ),
+      itemExtent: 48,
+      minuteInterval: 5,
       use24hFormat: true,
       showTimeSeparator: true,
       onDateTimeChanged: (dateTime) {
